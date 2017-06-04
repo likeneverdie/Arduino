@@ -23,7 +23,7 @@ const int buzzerPin = 7; // 蜂鳴器腳位
 
 int score = 0;
 
-void showScreen(int score);
+void showScreen(int scorek, String feedback);
 void catch_ball_music(int speakerPin);
 void fiveSecond(int speakerPin);
 
@@ -42,9 +42,9 @@ void setup() {
   a[1]=0;
   for(i = 1; i <= 10; i++){
     while(1){
-    srand(analogRead(0)); // 宣告亂數種子(以數位訊號為亂數種)
-    a[i] = random(3) + 1;
-    if(a[i]!=a[i-1])
+    randomSeed(analogRead(A0)); // 宣告亂數種子(以數位訊號為亂數種)
+    a[i] = random(1000)%3 + 1;
+    if(a[i] != a[i-1])
       break;
     }
 
@@ -196,7 +196,15 @@ void setup() {
   delay(100);
   Serial.print("score = ");
   Serial.println(score);
-  showScreen(score);
+  if(score <= 4){
+    showScreen(score, "Sharon");
+    }
+  if(score > 4 && score <= 9){
+    showScreen(score, "Congratulations~~~");
+    }
+  if(score == 10){
+    showScreen(score, "OPOP");
+   }
 }
 
 void loop() {
@@ -209,7 +217,7 @@ void loop() {
     利用tone函數控制(noTone)
  */
 
-void showScreen(int score){
+void showScreen(int score, String feedback){
  
 LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); //設定 LCD I2C 位址 如果晶片是PCF8574AT
  
@@ -222,7 +230,7 @@ LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); //設定 LCD I2C 
   lcd.print(score);
   delay(1000);
   lcd.setCursor(0, 1); // 設定游標位置在第二行行首
-  lcd.print("Congratulations !!!");
+  lcd.print(feedback);
   delay(1000);
   lcd.setCursor(0, 2); // 設定游標位置在第二行行首
   //lcd.print("I am stupid ><!");
