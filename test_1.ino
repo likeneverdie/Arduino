@@ -2,7 +2,7 @@
 # include <stdlib.h>
 # include <time.h>
 # include <Wire.h> 
-# include <LiquidCrystal_I2C.h>
+# include <LiquidCrystal_I2C.h> // LCD螢幕
 
 // IR Obstacle Collision Detection Module
 // Henry's Bench  //逆時針旋轉指針可以降低感應距離(目前預設左旋1/4)
@@ -23,7 +23,7 @@ const int buzzerPin = 7; // 蜂鳴器腳位
 
 int score = 0;
 
-void showScreen(int scorek, String feedback);
+void showScreen(int score, String feedback);
 void catch_ball_music(int speakerPin);
 void fiveSecond(int speakerPin);
 
@@ -64,6 +64,7 @@ void setup() {
           catch_ball_music(buzzerPin);
           Serial.println("Goal!!!");
           score += 1;
+          showScreen(score, "Goal!!");
           digitalWrite(greenLedPin, LOW);
           break;
         }
@@ -78,6 +79,7 @@ void setup() {
       
         if(timeInterval == 20000){
           Serial.println("Times up");
+          showScreen(score, "Time's up!!");
           digitalWrite(greenLedPin, LOW);
           break;
         }
@@ -100,6 +102,7 @@ void setup() {
           catch_ball_music(buzzerPin);
           Serial.println("Goal!!!");
           score += 1;
+          showScreen(score, "Goal!!");
           digitalWrite(blueLedPin, LOW);
           break;
         }
@@ -114,6 +117,7 @@ void setup() {
       
         if(timeInterval == 20000){
           Serial.println("Times up");
+          showScreen(score, "Time's up!!");
           digitalWrite(blueLedPin, LOW);
           break;
         }
@@ -138,6 +142,7 @@ void setup() {
           catch_ball_music(buzzerPin);
           Serial.println("Goal!!!");
           score += 1;
+          showScreen(score, "Goal!!");
           digitalWrite(redLedPin, LOW);
           break;
         }
@@ -152,6 +157,7 @@ void setup() {
       
         if(timeInterval == 20000){
           Serial.println("Times up");
+          showScreen(score, "Time's up!!");
           digitalWrite(redLedPin, LOW);
           break;
         }
@@ -200,7 +206,7 @@ void setup() {
     showScreen(score, "Sharon");
     }
   if(score > 4 && score <= 9){
-    showScreen(score, "Congratulations~~~");
+    showScreen(score, "Congratulations <3 ");
     }
   if(score == 10){
     showScreen(score, "OPOP");
