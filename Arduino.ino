@@ -9,13 +9,14 @@
 // http://blog.ilc.edu.tw/blog/index.php?op=printView&articleId=621311&blogId=868
 // http://henrysbench.capnfatz.com/henrys-bench/arduino-sensors-and-input/arduino-ir-obstacle-sensor-tutorial-and-manual/
 
-const int greenLedPin = 4;
+const int greenLedPin = 4; // 不同顏色之led燈腳位
 const int blueLedPin = 5;
 const int redLedPin = 6;
 
 const int ObstaclePin_green = 8;  // 障礙物腳位
 const int ObstaclePin_blue = 9;
 const int ObstaclePin_red = 10;
+
 int Obstacle = HIGH;  // HIGH MEANS NO OBSTACLE 有障礙物: LOW 沒有障礙物: HIGH 設定初始值: 沒有障礙物
 
 const int buzzerPin = 7; // 蜂鳴器腳位
@@ -37,14 +38,16 @@ void setup() {
   Serial.begin(9600); // 開啟溝通視窗
 
   int i;
-  int a[11];//
+  
+  int a[11]; // 產生一陣列儲存每一個迴圈的亂數資料
   a[0]=0;
   a[1]=0;
+  
   for(i = 1; i <= 10; i++){
     while(1){
     randomSeed(analogRead(A0)); // 宣告亂數種子(以數位訊號為亂數種)
     a[i] = random(1000)%3 + 1;
-    if(a[i] != a[i-1])
+    if(a[i] != a[i-1])  // 準備產生亂數 以陣列比較前後兩次亂數是否一樣, 若一樣則重新產生一次亂數, 否則 break
       break;
     }
 
@@ -230,14 +233,14 @@ LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); //設定 LCD I2C 
 
   lcd.begin(20, 4);      // 初始化 LCD，一行 20 的字元，共 4 行，預設開啟背光
  
-  delay(1000);
+  delay(100);
   lcd.setCursor(0, 0); // 設定游標位置在第一行行首
   lcd.print("Your score: ");
   lcd.print(score);
-  delay(1000);
+  delay(200);
   lcd.setCursor(0, 1); // 設定游標位置在第二行行首
   lcd.print(feedback);
-  delay(1000);
+  //delay(200);
   lcd.setCursor(0, 2); // 設定游標位置在第二行行首
   //lcd.print("I am stupid ><!");
   lcd.setCursor(0, 3); // 設定游標位置在第二行行首
