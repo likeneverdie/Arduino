@@ -27,6 +27,9 @@ int score = 0;
 void showScreen(int score, String feedback);
 void catch_ball_music(int speakerPin);
 void fiveSecond(int speakerPin);
+void score_4(int speakerPin);
+void score_5_9(int speakerPin)
+void score_10(int speakerPin);
 
 void setup() {
   
@@ -95,7 +98,7 @@ void setup() {
 
       while(1){
     
-        Obstacle = digitalRead(ObstaclePin_green);
+        Obstacle = digitalRead(ObstaclePin_blue);
       
         //unsigned long currentMillis = millis();
         //Serial.println(currentMillis);
@@ -135,7 +138,7 @@ void setup() {
 
       while(1){
     
-        Obstacle = digitalRead(ObstaclePin_green);
+        Obstacle = digitalRead(ObstaclePin_red);
       
         //unsigned long currentMillis = millis();
         //Serial.println(currentMillis);
@@ -170,7 +173,6 @@ void setup() {
     delay(1000);
   }
     /*const unsigned long previousMillis = millis(); // 紀錄迴圈開始時當下的時間
-
     while(1){
     
       Obstacle = digitalRead(ObstaclePin_green);
@@ -189,7 +191,6 @@ void setup() {
       unsigned long currentMillis = millis();  // 紀錄沒感測到障礙物時的時間
       unsigned long timeInterval = currentMillis - previousMillis;
       //Serial.println(timeInterval);
-
       if(timeInterval == 15000){
         fiveSecond(buzzerPin);
       }
@@ -206,13 +207,16 @@ void setup() {
   Serial.print("score = ");
   Serial.println(score);
   if(score <= 4){
-    showScreen(score, "Sharon");
+    showScreen(score, "Hank");
+    score_4(buzzerPin);
     }
   if(score > 4 && score <= 9){
     showScreen(score, "Congratulations <3 ");
+    score_5_9(buzzerPin);
     }
   if(score == 10){
     showScreen(score, "OPOP");
+    score_10(buzzerPin)
    }
 }
 
@@ -288,3 +292,54 @@ int thisNote;
    }
 }
 
+void score_4(int speakerPin)
+{
+// notes in the melody:
+int NOTE_C2=65, NOTE_E3=165, NOTE_G4= 392;
+int melody[] = {NOTE_C1, NOTE_C1, NOTE_E3, NOTE_E3,NOTE_G4, NOTE_G4, NOTE_E3};
+int duration = 200;  
+int thisNote;
+
+  for (int thisNote = 0; thisNote < 7; thisNote++)  // 輸出聲音，每個音階響 0.5 秒
+  {  
+    tone(speakerPin, melody[thisNote], duration);
+
+    delay(500);  // 間隔一段時間後再播放下一個音階
+
+   }
+}
+
+void score_5_9(int speakerPin)
+{
+// notes in the melody:
+int NOTE_C5=523, NOTE_E7=2637;
+int melody[] = {NOTE_E7, NOTE_E7, NOTE_E7, NOTE_C5};
+int duration = 200;  
+int thisNote;
+
+  for (int thisNote = 0; thisNote < 4; thisNote++)  // 輸出聲音，每個音階響 0.5 秒
+  {  
+    tone(speakerPin, melody[thisNote], duration);
+
+    delay(500);  // 間隔一段時間後再播放下一個音階
+
+   }
+}
+
+void score_10(int speakerPin)
+{
+// notes in the melody:
+int NOTE_C2=65, NOTE_E3, NOTE_G4=2637;
+int melody[] = {NOTE_C2, NOTE_E3, NOTE_G4, NOTE_E3, NOTE_G4};
+int duration[]= {4, 4, 2, 4, 2};  
+int thisNote, duration_second;
+
+  for (int thisNote = 0; thisNote < 5; thisNote++)  // 輸出聲音，每個音階響 0.5 秒
+  {  
+    duration_second=1000/duration[i];
+    tone(speakerPin, melody[thisNote], duration_second);
+
+    delay(500);  // 間隔一段時間後再播放下一個音階
+
+   }
+}
