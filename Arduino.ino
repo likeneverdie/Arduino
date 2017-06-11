@@ -17,7 +17,9 @@ const int ObstaclePin_green = 8;  // 障礙物腳位
 const int ObstaclePin_blue = 9;
 const int ObstaclePin_red = 10;
 
-int Obstacle = HIGH;  // HIGH MEANS NO OBSTACLE 有障礙物: LOW 沒有障礙物: HIGH 設定初始值: 沒有障礙物
+int Obstacle_Correct = HIGH;  // HIGH MEANS NO OBSTACLE 有障礙物: LOW 沒有障礙物: HIGH 設定初始值: 沒有障礙物
+int Obstacle_Wrong1 = HIGH;
+int Obstacle_Wrong2 = HIGH;
 
 const int buzzerPin = 7; // 蜂鳴器腳位
 
@@ -28,7 +30,7 @@ void showScreen(int score, String feedback);
 void catch_ball_music(int speakerPin);
 void fiveSecond(int speakerPin);
 void score_4(int speakerPin);
-void score_5_9(int speakerPin)
+void score_5_9(int speakerPin);
 void score_10(int speakerPin);
 
 void setup() {
@@ -60,17 +62,34 @@ void setup() {
 
       while(1){
     
-        Obstacle = digitalRead(ObstaclePin_green);
+        Obstacle_Correct = digitalRead(ObstaclePin_green);
+        Obstacle_Wrong1 = digitalRead(ObstaclePin_blue);
+        Obstacle_Wrong2 = digitalRead(ObstaclePin_red);
       
         //unsigned long currentMillis = millis();
         //Serial.println(currentMillis);
+        
       
-        if (Obstacle == LOW){
+        if (Obstacle_Correct == LOW){
           delay(100);
           catch_ball_music(buzzerPin);
           Serial.println("Goal!!!");
           score += 1;
           showScreen(score, "Goal!!");
+          digitalWrite(greenLedPin, LOW);
+          break;
+        }
+        else if(Obstacle_Wrong1 == LOW){
+          delay(100);
+          Serial.println("Wrong hole");
+          showScreen(score, "Wrong hole");
+          digitalWrite(greenLedPin, LOW);
+          break;
+        }
+        else if(Obstacle_Wrong2 == LOW){
+          delay(100);
+          Serial.println("Wrong hole");
+          showScreen(score, "Wrong hole");
           digitalWrite(greenLedPin, LOW);
           break;
         }
@@ -98,17 +117,33 @@ void setup() {
 
       while(1){
     
-        Obstacle = digitalRead(ObstaclePin_blue);
+        Obstacle_Correct = digitalRead(ObstaclePin_blue);
+        Obstacle_Wrong1 = digitalRead(ObstaclePin_red);
+        Obstacle_Wrong2 = digitalRead(ObstaclePin_green);
       
         //unsigned long currentMillis = millis();
         //Serial.println(currentMillis);
       
-        if (Obstacle == LOW){
+        if (Obstacle_Correct == LOW){
           delay(100);
           catch_ball_music(buzzerPin);
           Serial.println("Goal!!!");
           score += 1;
           showScreen(score, "Goal!!");
+          digitalWrite(blueLedPin, LOW);
+          break;
+        }
+        else if(Obstacle_Wrong1 == LOW){
+          delay(100);
+          Serial.println("Wrong hole");
+          showScreen(score, "Wrong hole");
+          digitalWrite(blueLedPin, LOW);
+          break;
+        }
+        else if(Obstacle_Wrong2 == LOW){
+          delay(100);
+          Serial.println("Wrong hole");
+          showScreen(score, "Wrong hole");
           digitalWrite(blueLedPin, LOW);
           break;
         }
@@ -138,17 +173,33 @@ void setup() {
 
       while(1){
     
-        Obstacle = digitalRead(ObstaclePin_red);
+        Obstacle_Correct = digitalRead(ObstaclePin_red);
+        Obstacle_Wrong1 = digitalRead(ObstaclePin_blue);
+        Obstacle_Wrong2 = digitalRead(ObstaclePin_green);
       
         //unsigned long currentMillis = millis();
         //Serial.println(currentMillis);
       
-        if (Obstacle == LOW){
+        if (Obstacle_Correct == LOW){
           delay(100);
           catch_ball_music(buzzerPin);
           Serial.println("Goal!!!");
           score += 1;
           showScreen(score, "Goal!!");
+          digitalWrite(redLedPin, LOW);
+          break;
+        }
+        else if(Obstacle_Wrong1 == LOW){
+          delay(100);
+          Serial.println("Wrong hole");
+          showScreen(score, "Wrong hole");
+          digitalWrite(redLedPin, LOW);
+          break;
+        }
+        else if(Obstacle_Wrong2 == LOW){
+          delay(100);
+          Serial.println("Wrong hole");
+          showScreen(score, "Wrong hole");
           digitalWrite(redLedPin, LOW);
           break;
         }
@@ -216,7 +267,7 @@ void setup() {
     }
   if(score == 10){
     showScreen(score, "OPOP");
-    score_10(buzzerPin)
+    score_10(buzzerPin);
    }
 }
 
@@ -296,7 +347,7 @@ void score_4(int speakerPin)
 {
 // notes in the melody:
 int NOTE_C2=65, NOTE_E3=165, NOTE_G4= 392;
-int melody[] = {NOTE_C1, NOTE_C1, NOTE_E3, NOTE_E3,NOTE_G4, NOTE_G4, NOTE_E3};
+int melody[] = {NOTE_C2, NOTE_C2, NOTE_E3, NOTE_E3,NOTE_G4, NOTE_G4, NOTE_E3};
 int duration = 200;  
 int thisNote;
 
@@ -336,7 +387,7 @@ int thisNote, duration_second;
 
   for (int thisNote = 0; thisNote < 5; thisNote++)  // 輸出聲音，每個音階響 0.5 秒
   {  
-    duration_second=1000/duration[i];
+    duration_second=1000/duration[thisNote];
     tone(speakerPin, melody[thisNote], duration_second);
 
     delay(500);  // 間隔一段時間後再播放下一個音階
