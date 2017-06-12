@@ -9,20 +9,31 @@
 // http://blog.ilc.edu.tw/blog/index.php?op=printView&articleId=621311&blogId=868
 // http://henrysbench.capnfatz.com/henrys-bench/arduino-sensors-and-input/arduino-ir-obstacle-sensor-tutorial-and-manual/
 
-const int greenLedPin = 1; // 不同顏色之led燈腳位
-const int blueLedPin = 2;
-const int redLedPin = 3;
+const int buzzerPin = 14; // 蜂鳴器腳位
 
-const int ObstaclePin_green = 7;  // 障礙物腳位
-const int ObstaclePin_blue = 8;
-const int ObstaclePin_red = 9;
+const int greenLedPin = 2; // 不同顏色之led燈腳位 1P
+const int purpleLedPin = 3;
+const int redLedPin = 4;
+
+const int pinkLedPin = 5;  // 2P
+const int blueLedPin = 6;
+const int whiteLedPin = 7;
+
+
+const int ObstaclePin_green = 8; // 障礙物腳位 1P
+const int ObstaclePin_blue = 9;
+const int ObstaclePin_red = 10;
+
+const int ObstaclePin_pink = 11; // 2P
+const int ObstaclePin_purple = 12;
+const int ObstaclePin_white = 13;
 
 int Obstacle_Correct = HIGH;  // HIGH MEANS NO OBSTACLE 有障礙物: LOW 沒有障礙物: HIGH 設定初始值: 沒有障礙物
 int Obstacle_Wrong1 = HIGH;
 int Obstacle_Wrong2 = HIGH;
 
-const int buzzerPin = 7; // 蜂鳴器腳位
-
+int health_1P = 100;
+int health_2P = 100;
 
 int score = 0;
 
@@ -35,28 +46,41 @@ void score_10(int speakerPin);
 
 void setup() {
   
-  pinMode(ObstaclePin_green, INPUT); //障礙物感測器 ---> 輸入模式
-  pinMode(buzzerPin, OUTPUT);
-  pinMode(greenLedPin, OUTPUT);
-  pinMode(blueLedPin, OUTPUT);
+  pinMode(buzzerPin, OUTPUT); // 蜂鳴器 ---> 輸出模式
+
+  pinMode(greenLedPin, OUTPUT); // Led燈 ---> 輸出模式
+  pinMode(purpleLedPin, OUTPUT);
   pinMode(redLedPin, OUTPUT);
+  pinMode(pinkLedPin, OUTPUT);
+  pinMode(blueLedPin, OUTPUT);
+  pinMode(whiteLedPin, OUTPUT);
+  
+  pinMode(ObstaclePin_green, INPUT); //障礙物感測器 ---> 輸入模式
+  pinMode(ObstaclePin_purple, INPUT);
+  pinMode(ObstaclePin_red, INPUT);
+  pinMode(ObstaclePin_pink, INPUT);
+  pinMode(ObstaclePin_blue, INPUT);
+  pinMode(ObstaclePin_white, INPUT);
+  
   Serial.begin(9600); // 開啟溝通視窗
 
   int i;
   
-  int a[11]; // 產生一陣列儲存每一個迴圈的亂數資料
-  a[0]=0;
-  a[1]=0;
-  
-  for(i = 1; i <= 10; i++){
-    while(1){
-    randomSeed(analogRead(A0)); // 宣告亂數種子(以數位訊號為亂數種)
-    a[i] = random(1000)%3 + 1;
-    if(a[i] != a[i-1])  // 準備產生亂數 以陣列比較前後兩次亂數是否一樣, 若一樣則重新產生一次亂數, 否則 break
-      break;
-    }
+  int a,b,c,d; // 產生一陣列儲存每一個迴圈的亂數資料
 
-    if ( a[i] == 1 ){
+  a = 0;
+  b = 0;
+  c = 0;
+  d = 0;
+  //2P先攻
+  while(1){
+    while(a==b){
+    randomSeed(analogRead(A0)); // 宣告亂數種子(以數位訊號為亂數種)
+    a = random(1000)%3 + 1;
+    }
+    b=a;
+
+    if ( a == 1 ){
       digitalWrite(greenLedPin, HIGH);
       const unsigned long previousMillis = millis(); // 紀錄迴圈開始時當下的時間
 
@@ -74,22 +98,22 @@ void setup() {
           delay(100);
           catch_ball_music(buzzerPin);
           Serial.println("Goal!!!");
-          score += 1;
-          showScreen(score, "Goal!!");
+          health_1P -= 10;
+          showScreen(health_1P, "Goal!!");
           digitalWrite(greenLedPin, LOW);
           break;
         }
         else if(Obstacle_Wrong1 == LOW){
           delay(100);
           Serial.println("Wrong hole");
-          showScreen(score, "Wrong hole");
+          showScreen(health_1P, "Wrong hole");
           digitalWrite(greenLedPin, LOW);
           break;
         }
         else if(Obstacle_Wrong2 == LOW){
           delay(100);
           Serial.println("Wrong hole");
-          showScreen(score, "Wrong hole");
+          showScreen(health_1P, "Wrong hole");
           digitalWrite(greenLedPin, LOW);
           break;
         }
@@ -104,15 +128,15 @@ void setup() {
       
         if(timeInterval == 20000){
           Serial.println("Times up");
-          showScreen(score, "Time's up!!");
+          showScreen(health_1P, "Time's up!!");
           digitalWrite(greenLedPin, LOW);
           break;
         }
       }
      }
 
-     else if ( a[i] == 2 ){
-      digitalWrite(blueLedPin, HIGH);
+     else if ( a == 2 ){
+      digitalWrite(purpleLedPin, HIGH);
       const unsigned long previousMillis = millis(); // 紀錄迴圈開始時當下的時間
 
       while(1){
@@ -128,23 +152,23 @@ void setup() {
           delay(100);
           catch_ball_music(buzzerPin);
           Serial.println("Goal!!!");
-          score += 1;
-          showScreen(score, "Goal!!");
-          digitalWrite(blueLedPin, LOW);
+          health_1P -= 10;
+          showScreen(health_1P, "Goal!!");
+          digitalWrite(purpleLedPin, LOW);
           break;
         }
         else if(Obstacle_Wrong1 == LOW){
           delay(100);
           Serial.println("Wrong hole");
-          showScreen(score, "Wrong hole");
-          digitalWrite(blueLedPin, LOW);
+          showScreen(health_1P, "Wrong hole");
+          digitalWrite(purpleLedPin, LOW);
           break;
         }
         else if(Obstacle_Wrong2 == LOW){
           delay(100);
           Serial.println("Wrong hole");
-          showScreen(score, "Wrong hole");
-          digitalWrite(blueLedPin, LOW);
+          showScreen(health_1P, "Wrong hole");
+          digitalWrite(purpleLedPin, LOW);
           break;
         }
       
@@ -158,8 +182,8 @@ void setup() {
       
         if(timeInterval == 20000){
           Serial.println("Times up");
-          showScreen(score, "Time's up!!");
-          digitalWrite(blueLedPin, LOW);
+          showScreen(health_1P, "Time's up!!");
+          digitalWrite(purpleLedPin, LOW);
           break;
         }
       
@@ -167,7 +191,7 @@ void setup() {
       
      }
 
-     else if ( a[i] == 3 ){
+     else if ( a == 3 ){
       digitalWrite(redLedPin, HIGH);
       const unsigned long previousMillis = millis(); // 紀錄迴圈開始時當下的時間
 
@@ -184,22 +208,22 @@ void setup() {
           delay(100);
           catch_ball_music(buzzerPin);
           Serial.println("Goal!!!");
-          score += 1;
-          showScreen(score, "Goal!!");
+          health_1P -= 10;
+          showScreen(health_1P, "Goal!!");
           digitalWrite(redLedPin, LOW);
           break;
         }
         else if(Obstacle_Wrong1 == LOW){
           delay(100);
           Serial.println("Wrong hole");
-          showScreen(score, "Wrong hole");
+          showScreen(health_1P, "Wrong hole");
           digitalWrite(redLedPin, LOW);
           break;
         }
         else if(Obstacle_Wrong2 == LOW){
           delay(100);
           Serial.println("Wrong hole");
-          showScreen(score, "Wrong hole");
+          showScreen(health_1P, "Wrong hole");
           digitalWrite(redLedPin, LOW);
           break;
         }
@@ -214,13 +238,192 @@ void setup() {
       
         if(timeInterval == 20000){
           Serial.println("Times up");
-          showScreen(score, "Time's up!!");
+          showScreen(health_1P, "Time's up!!");
           digitalWrite(redLedPin, LOW);
           break;
         }
       
       }
     }
+    if(health_1P == 0){
+    break;}
+    delay(1000);
+
+    //1P攻
+
+    while(c==d){
+    randomSeed(analogRead(A0)); // 宣告亂數種子(以數位訊號為亂數種)
+    c = random(1000)%3 + 4;
+    }
+    d=c;
+
+    if ( c == 4 ){
+      digitalWrite(pinkLedPin, HIGH);
+      const unsigned long previousMillis = millis(); // 紀錄迴圈開始時當下的時間
+
+      while(1){
+    
+        Obstacle_Correct = digitalRead(ObstaclePin_pink);
+        Obstacle_Wrong1 = digitalRead(ObstaclePin_purple);
+        Obstacle_Wrong2 = digitalRead(ObstaclePin_white);
+      
+        //unsigned long currentMillis = millis();
+        //Serial.println(currentMillis);
+        
+      
+        if (Obstacle_Correct == LOW){
+          delay(100);
+          catch_ball_music(buzzerPin);
+          Serial.println("Goal!!!");
+          health_2P -= 10;
+          showScreen(health_2P, "Goal!!");
+          digitalWrite(pinkLedPin, LOW);
+          break;
+        }
+        else if(Obstacle_Wrong1 == LOW){
+          delay(100);
+          Serial.println("Wrong hole");
+          showScreen(health_2P, "Wrong hole");
+          digitalWrite(pinkLedPin, LOW);
+          break;
+        }
+        else if(Obstacle_Wrong2 == LOW){
+          delay(100);
+          Serial.println("Wrong hole");
+          showScreen(health_2P, "Wrong hole");
+          digitalWrite(pinkLedPin, LOW);
+          break;
+        }
+      
+        unsigned long currentMillis = millis();  // 紀錄沒感測到障礙物時的時間
+        unsigned long timeInterval = currentMillis - previousMillis;
+        //Serial.println(timeInterval);
+
+        if(timeInterval == 15000){
+          fiveSecond(buzzerPin);
+        }
+      
+        if(timeInterval == 20000){
+          Serial.println("Times up");
+          showScreen(health_2P, "Time's up!!");
+          digitalWrite(pinkLedPin, LOW);
+          break;
+        }
+      }
+     }
+
+     else if ( c == 5 ){
+      digitalWrite(blueLedPin, HIGH);
+      const unsigned long previousMillis = millis(); // 紀錄迴圈開始時當下的時間
+
+      while(1){
+    
+        Obstacle_Correct = digitalRead(ObstaclePin_purple);
+        Obstacle_Wrong1 = digitalRead(ObstaclePin_pink);
+        Obstacle_Wrong2 = digitalRead(ObstaclePin_white);
+      
+        //unsigned long currentMillis = millis();
+        //Serial.println(currentMillis);
+      
+        if (Obstacle_Correct == LOW){
+          delay(100);
+          catch_ball_music(buzzerPin);
+          Serial.println("Goal!!!");
+          health_2P -= 10;
+          showScreen(health_2P, "Goal!!");
+          digitalWrite(blueLedPin, LOW);
+          break;
+        }
+        else if(Obstacle_Wrong1 == LOW){
+          delay(100);
+          Serial.println("Wrong hole");
+          showScreen(health_2P, "Wrong hole");
+          digitalWrite(blueLedPin, LOW);
+          break;
+        }
+        else if(Obstacle_Wrong2 == LOW){
+          delay(100);
+          Serial.println("Wrong hole");
+          showScreen(health_2P, "Wrong hole");
+          digitalWrite(blueLedPin, LOW);
+          break;
+        }
+      
+        unsigned long currentMillis = millis();  // 紀錄沒感測到障礙物時的時間
+        unsigned long timeInterval = currentMillis - previousMillis;
+        //Serial.println(timeInterval);
+
+        if(timeInterval == 15000){
+          fiveSecond(buzzerPin);
+        }
+      
+        if(timeInterval == 20000){
+          Serial.println("Times up");
+          showScreen(health_2P, "Time's up!!");
+          digitalWrite(blueLedPin, LOW);
+          break;
+        }
+      
+      }
+      
+     }
+
+     else if ( c == 6 ){
+      digitalWrite(whiteLedPin, HIGH);
+      const unsigned long previousMillis = millis(); // 紀錄迴圈開始時當下的時間
+
+      while(1){
+    
+        Obstacle_Correct = digitalRead(ObstaclePin_white);
+        Obstacle_Wrong1 = digitalRead(ObstaclePin_pink);
+        Obstacle_Wrong2 = digitalRead(ObstaclePin_purple);
+      
+        //unsigned long currentMillis = millis();
+        //Serial.println(currentMillis);
+      
+        if (Obstacle_Correct == LOW){
+          delay(100);
+          catch_ball_music(buzzerPin);
+          Serial.println("Goal!!!");
+          health_2P -= 10;
+          showScreen(health_2P, "Goal!!");
+          digitalWrite(pinkLedPin, LOW);
+          break;
+        }
+        else if(Obstacle_Wrong1 == LOW){
+          delay(100);
+          Serial.println("Wrong hole");
+          showScreen(health_2P, "Wrong hole");
+          digitalWrite(pinkLedPin, LOW);
+          break;
+        }
+        else if(Obstacle_Wrong2 == LOW){
+          delay(100);
+          Serial.println("Wrong hole");
+          showScreen(health_2P, "Wrong hole");
+          digitalWrite(pinkLedPin, LOW);
+          break;
+        }
+      
+        unsigned long currentMillis = millis();  // 紀錄沒感測到障礙物時的時間
+        unsigned long timeInterval = currentMillis - previousMillis;
+        //Serial.println(timeInterval);
+
+        if(timeInterval == 15000){
+          fiveSecond(buzzerPin);
+        }
+      
+        if(timeInterval == 20000){
+          Serial.println("Times up");
+          showScreen(health_2P, "Time's up!!");
+          digitalWrite(pinkLedPin, LOW);
+          break;
+        }
+      
+      }
+    }
+    if(health_2P == 0)
+    break;
     delay(1000);
   }
     /*const unsigned long previousMillis = millis(); // 紀錄迴圈開始時當下的時間
@@ -255,8 +458,8 @@ void setup() {
     delay(1000);
   }*/
   delay(100);
-  Serial.print("score = ");
-  Serial.println(score);
+  Serial.print("health(1P) = ");
+  Serial.println(health_1P);
   if(score <= 4){
     showScreen(score, "Hank");
     score_4(buzzerPin);
