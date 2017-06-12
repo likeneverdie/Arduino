@@ -9,13 +9,13 @@
 // http://blog.ilc.edu.tw/blog/index.php?op=printView&articleId=621311&blogId=868
 // http://henrysbench.capnfatz.com/henrys-bench/arduino-sensors-and-input/arduino-ir-obstacle-sensor-tutorial-and-manual/
 
-const int greenLedPin = 4; // 不同顏色之led燈腳位
-const int blueLedPin = 5;
-const int redLedPin = 6;
+const int greenLedPin = 1; // 不同顏色之led燈腳位
+const int blueLedPin = 2;
+const int redLedPin = 3;
 
-const int ObstaclePin_green = 8;  // 障礙物腳位
-const int ObstaclePin_blue = 9;
-const int ObstaclePin_red = 10;
+const int ObstaclePin_green = 7;  // 障礙物腳位
+const int ObstaclePin_blue = 8;
+const int ObstaclePin_red = 9;
 
 int Obstacle_Correct = HIGH;  // HIGH MEANS NO OBSTACLE 有障礙物: LOW 沒有障礙物: HIGH 設定初始值: 沒有障礙物
 int Obstacle_Wrong1 = HIGH;
