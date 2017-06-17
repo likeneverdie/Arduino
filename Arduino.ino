@@ -9,7 +9,7 @@
 // http://blog.ilc.edu.tw/blog/index.php?op=printView&articleId=621311&blogId=868
 // http://henrysbench.capnfatz.com/henrys-bench/arduino-sensors-and-input/arduino-ir-obstacle-sensor-tutorial-and-manual/
 
-const int buzzerPin = 14; // 蜂鳴器腳位
+const int buzzerPin = 13; // 蜂鳴器腳位
 
 const int greenLedPin = 2; // 不同顏色之led燈腳位 1P
 const int blueLedPin = 3;
@@ -18,7 +18,6 @@ const int redLedPin = 4;
 const int pinkLedPin = 5;  // 2P
 const int purpleLedPin = 6;
 const int whiteLedPin = 7;
-
 
 const int ObstaclePin_green = 8; // 障礙物腳位 1P
 const int ObstaclePin_blue = 9;
@@ -37,12 +36,14 @@ int health_2P = 100;
 
 int score = 0;
 
-void showScreen(int score, String feedback);
+void showScreen(int health_1P, int health_2P, String feedback);
 void catch_ball_music(int speakerPin);
 void fiveSecond(int speakerPin);
 void score_4(int speakerPin);
 void score_5_9(int speakerPin);
 void score_10(int speakerPin);
+void wrong_throw(int speakerPin);
+void game_over(int speakerPin);
 
 void setup() {
   
@@ -103,21 +104,23 @@ while(1){
           catch_ball_music(buzzerPin);
           Serial.println("Goal!!!");
           health_1P -= 10;
-          showScreen(health_1P, "Goal!!");
+          showScreen(health_1P, health_2P, "Goal!!");
           digitalWrite(greenLedPin, LOW);
           break;
         }
         else if(Obstacle_Wrong1 == LOW){
           delay(100);
+          wrong_throw(buzzerPin);
           Serial.println("Wrong hole");
-          showScreen(health_1P, "Wrong hole");
+          showScreen(health_1P, health_2P, "Wrong hole");
           digitalWrite(greenLedPin, LOW);
           break;
         }
         else if(Obstacle_Wrong2 == LOW){
           delay(100);
+          wrong_throw(buzzerPin);
           Serial.println("Wrong hole");
-          showScreen(health_1P, "Wrong hole");
+          showScreen(health_1P, health_2P, "Wrong hole");
           digitalWrite(greenLedPin, LOW);
           break;
         }
@@ -132,7 +135,7 @@ while(1){
       
         if(timeInterval == 20000){
           Serial.println("Times up");
-          showScreen(health_1P, "Time's up!!");
+          showScreen(health_1P, health_2P,  "Time's up!!");
           digitalWrite(greenLedPin, LOW);
           break;
         }
@@ -157,21 +160,23 @@ while(1){
           catch_ball_music(buzzerPin);
           Serial.println("Goal!!!");
           health_1P -= 10;
-          showScreen(health_1P, "Goal!!");
+          showScreen(health_1P, health_2P,  "Goal!!");
           digitalWrite(blueLedPin, LOW);
           break;
         }
         else if(Obstacle_Wrong1 == LOW){
           delay(100);
+          wrong_throw(buzzerPin);
           Serial.println("Wrong hole");
-          showScreen(health_1P, "Wrong hole");
+          showScreen(health_1P, health_2P,  "Wrong hole");
           digitalWrite(blueLedPin, LOW);
           break;
         }
         else if(Obstacle_Wrong2 == LOW){
           delay(100);
+          wrong_throw(buzzerPin);
           Serial.println("Wrong hole");
-          showScreen(health_1P, "Wrong hole");
+          showScreen(health_1P, health_2P,  "Wrong hole");
           digitalWrite(blueLedPin, LOW);
           break;
         }
@@ -186,7 +191,7 @@ while(1){
       
         if(timeInterval == 20000){
           Serial.println("Times up");
-          showScreen(health_1P, "Time's up!!");
+          showScreen(health_1P, health_2P,  "Time's up!!");
           digitalWrite(blueLedPin, LOW);
           break;
         }
@@ -213,21 +218,23 @@ while(1){
           catch_ball_music(buzzerPin);
           Serial.println("Goal!!!");
           health_1P -= 10;
-          showScreen(health_1P, "Goal!!");
+          showScreen(health_1P, health_2P,  "Goal!!");
           digitalWrite(redLedPin, LOW);
           break;
         }
         else if(Obstacle_Wrong1 == LOW){
           delay(100);
+          wrong_throw(buzzerPin);
           Serial.println("Wrong hole");
-          showScreen(health_1P, "Wrong hole");
+          showScreen(health_1P, health_2P, "Wrong hole");
           digitalWrite(redLedPin, LOW);
           break;
         }
         else if(Obstacle_Wrong2 == LOW){
           delay(100);
+          wrong_throw(buzzerPin);
           Serial.println("Wrong hole");
-          showScreen(health_1P, "Wrong hole");
+          showScreen(health_1P, health_2P,  "Wrong hole");
           digitalWrite(redLedPin, LOW);
           break;
         }
@@ -242,7 +249,7 @@ while(1){
       
         if(timeInterval == 20000){
           Serial.println("Times up");
-          showScreen(health_1P, "Time's up!!");
+          showScreen(health_1P, health_2P, "Time's up!!");
           digitalWrite(redLedPin, LOW);
           break;
         }
@@ -250,7 +257,9 @@ while(1){
       }
     }
     if(health_1P == 0){
-    break;}
+      game_over(buzzerPin);
+      break;
+    }
     delay(1000);
 
     //1P攻
@@ -280,21 +289,23 @@ while(1){
           catch_ball_music(buzzerPin);
           Serial.println("Goal!!!");
           health_2P -= 10;
-          showScreen(health_2P, "Goal!!");
+          showScreen(health_1P, health_2P, "Goal!!");
           digitalWrite(pinkLedPin, LOW);
           break;
         }
         else if(Obstacle_Wrong1 == LOW){
           delay(100);
+          wrong_throw(buzzerPin);
           Serial.println("Wrong hole");
-          showScreen(health_2P, "Wrong hole");
+          showScreen(health_1P, health_2P, "Wrong hole");
           digitalWrite(pinkLedPin, LOW);
           break;
         }
         else if(Obstacle_Wrong2 == LOW){
           delay(100);
+          wrong_throw(buzzerPin);
           Serial.println("Wrong hole");
-          showScreen(health_2P, "Wrong hole");
+          showScreen(health_1P, health_2P, "Wrong hole");
           digitalWrite(pinkLedPin, LOW);
           break;
         }
@@ -309,7 +320,7 @@ while(1){
       
         if(timeInterval == 20000){
           Serial.println("Times up");
-          showScreen(health_2P, "Time's up!!");
+          showScreen(health_1P, health_2P, "Time's up!!");
           digitalWrite(pinkLedPin, LOW);
           break;
         }
@@ -334,21 +345,23 @@ while(1){
           catch_ball_music(buzzerPin);
           Serial.println("Goal!!!");
           health_2P -= 10;
-          showScreen(health_2P, "Goal!!");
+          showScreen(health_1P, health_2P, "Goal!!");
           digitalWrite(purpleLedPin, LOW);
           break;
         }
         else if(Obstacle_Wrong1 == LOW){
           delay(100);
+          wrong_throw(buzzerPin);
           Serial.println("Wrong hole");
-          showScreen(health_2P, "Wrong hole");
+          showScreen(health_1P, health_2P, "Wrong hole");
           digitalWrite(purpleLedPin, LOW);
           break;
         }
         else if(Obstacle_Wrong2 == LOW){
           delay(100);
+          wrong_throw(buzzerPin);
           Serial.println("Wrong hole");
-          showScreen(health_2P, "Wrong hole");
+          showScreen(health_1P, health_2P, "Wrong hole");
           digitalWrite(purpleLedPin, LOW);
           break;
         }
@@ -363,7 +376,7 @@ while(1){
       
         if(timeInterval == 20000){
           Serial.println("Times up");
-          showScreen(health_2P, "Time's up!!");
+          showScreen(health_1P, health_2P, "Time's up!!");
           digitalWrite(purpleLedPin, LOW);
           break;
         }
@@ -390,21 +403,23 @@ while(1){
           catch_ball_music(buzzerPin);
           Serial.println("Goal!!!");
           health_2P -= 10;
-          showScreen(health_2P, "Goal!!");
+          showScreen(health_1P, health_2P, "Goal!!");
           digitalWrite(whiteLedPin, LOW);
           break;
         }
         else if(Obstacle_Wrong1 == LOW){
           delay(100);
+          wrong_throw(buzzerPin);
           Serial.println("Wrong hole");
-          showScreen(health_2P, "Wrong hole");
+          showScreen(health_1P, health_2P, "Wrong hole");
           digitalWrite(whiteLedPin, LOW);
           break;
         }
         else if(Obstacle_Wrong2 == LOW){
           delay(100);
+          wrong_throw(buzzerPin);
           Serial.println("Wrong hole");
-          showScreen(health_2P, "Wrong hole");
+          showScreen(health_1P, health_2P, "Wrong hole");
           digitalWrite(whiteLedPin, LOW);
           break;
         }
@@ -419,16 +434,18 @@ while(1){
       
         if(timeInterval == 20000){
           Serial.println("Times up");
-          showScreen(health_2P, "Time's up!!");
+          showScreen(health_1P, health_2P, "Time's up!!");
           digitalWrite(whiteLedPin, LOW);
           break;
         }
       
       }
     }
-    if(health_2P == 0)
-    break;
-    delay(1000);
+    if(health_2P == 0){
+      game_over(buzzerPin);
+      break;
+      delay(1000);
+    }
   }
     /*const unsigned long previousMillis = millis(); // 紀錄迴圈開始時當下的時間
     while(1){
@@ -464,8 +481,10 @@ while(1){
   delay(100);
   Serial.print("health(1P) = ");
   Serial.println(health_1P);
-  if(score <= 4){
-    showScreen(score, "Hank");
+  Serial.print("health(2P) = ");
+  Serial.println(health_2P);
+  /*if(score <= 4){
+    showScreen(score, "Sharon");
     score_4(buzzerPin);
     }
   if(score > 4 && score <= 9){
@@ -475,7 +494,7 @@ while(1){
   if(score == 10){
     showScreen(score, "OPOP");
     score_10(buzzerPin);
-   }
+   }*/
 }
 
 void loop() {
@@ -488,7 +507,7 @@ void loop() {
     利用tone函數控制(noTone)
  */
 
-void showScreen(int score, String feedback){
+void showScreen(int health_1P, int health_2P, String feedback){
  
 LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); //設定 LCD I2C 位址 如果晶片是PCF8574AT
  
@@ -497,16 +516,16 @@ LiquidCrystal_I2C lcd(0x3F, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); //設定 LCD I2C 
  
   delay(100);
   lcd.setCursor(0, 0); // 設定游標位置在第一行行首
-  lcd.print("Your score: ");
-  lcd.print(score);
-  delay(200);
+  lcd.print("1P HP: ");
+  lcd.print(health_1P);
+  delay(100);
   lcd.setCursor(0, 1); // 設定游標位置在第二行行首
-  lcd.print(feedback);
-  //delay(200);
+  lcd.print("2P HP: ");
+  lcd.print(health_2P);
+  delay(100);
   lcd.setCursor(0, 2); // 設定游標位置在第二行行首
-  //lcd.print("I am stupid ><!");
-  lcd.setCursor(0, 3); // 設定游標位置在第二行行首
-  //lcd.print("I am retard ><!");
+  lcd.print(feedback);
+  //lcd.setCursor(0, 3); // 設定游標位置在第二行行首
   //lcd.clear(); //清空畫面
 /* 
    GND接GND
@@ -520,11 +539,11 @@ void catch_ball_music(int speakerPin)
 {
   // notes in the melody:
   int /*NOTE_C2=65,*/ NOTE_E4=330;
-  int melody[] = {NOTE_E4, NOTE_E4};
+  int melody[] = {NOTE_E4, NOTE_E4, NOTE_E4, NOTE_E4};
   int duration = 200;  
   int thisNote;
 
-  for (thisNote = 0; thisNote < 2; thisNote++)  // 在 pin7   上輸出聲音，每個音階響 0.5 秒
+  for (thisNote = 0; thisNote < 4; thisNote++)  // 在 pin7   上輸出聲音，每個音階響 0.5 秒
   {  
     tone(speakerPin, melody[thisNote], duration);
 
@@ -601,3 +620,43 @@ int thisNote, duration_second;
 
    }
 }
+
+void wrong_throw(int speakerPin)
+{
+
+ int NOTE_E1=41, NOTE_C1=33;
+ int melody[]={NOTE_E1, NOTE_C1};
+ int duration= 200;
+ int thisNote;
+
+  for(int thisNote = 0; thisNote < 2; thisNote++)
+  {
+    tone(speakerPin, melody[thisNote], duration);
+
+    delay(500);
+  }
+}
+
+void game_over(int speakerPin)
+{
+
+ int NOTE_C4=262, NOTE_D4=294, NOTE_E4=330, NOTE_G4=392;
+ int melody[]={NOTE_C4, NOTE_D4, NOTE_E4, NOTE_D4};
+ int duration= 200;
+ int thisNote;
+
+  for(int thisNote = 0; thisNote < 4; thisNote++)
+  {
+    tone(speakerPin, melody[thisNote], duration);
+
+    delay(500);
+  }
+   for(int thisNote = 0; thisNote < 4; thisNote++)
+  {
+    tone(speakerPin, melody[thisNote], duration);
+
+    delay(500);
+  }
+}
+
+
