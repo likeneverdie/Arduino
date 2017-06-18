@@ -91,6 +91,10 @@ void setup() {
       digitalWrite(greenLedPin, LOW);
       digitalWrite(pinkLedPin, LOW);
       lcd.clear();
+      delay(2000);
+
+      showScreen_1P(score, "Game Start!");
+      
       int i;
 
       int a[11]; // 產生一陣列儲存每一個迴圈的亂數資料
@@ -102,7 +106,7 @@ void setup() {
           randomSeed(analogRead(A0)); // 宣告亂數種子(以數位訊號為亂數種)
           a[i] = random(1000) % 3 + 1;
           if (a[i] != a[i - 1]) // 準備產生亂數 以陣列比較前後兩次亂數是否一樣, 若一樣則重新產生一次亂數, 否則 break
-            break;
+          break;
         }
 
         if ( a[i] == 1 ) {
@@ -130,6 +134,7 @@ void setup() {
             }
             else if (Obstacle_Wrong1 == LOW) {
               delay(100);
+              wrong_throw(buzzerPin);
               Serial.println("Wrong hole");
               showScreen_1P(score, "Wrong hole");
               digitalWrite(greenLedPin, LOW);
@@ -137,6 +142,7 @@ void setup() {
             }
             else if (Obstacle_Wrong2 == LOW) {
               delay(100);
+              wrong_throw(buzzerPin);
               Serial.println("Wrong hole");
               showScreen_1P(score, "Wrong hole");
               digitalWrite(greenLedPin, LOW);
@@ -184,6 +190,7 @@ void setup() {
             }
             else if (Obstacle_Wrong1 == LOW) {
               delay(100);
+              wrong_throw(buzzerPin);
               Serial.println("Wrong hole");
               showScreen_1P(score, "Wrong hole");
               digitalWrite(blueLedPin, LOW);
@@ -191,6 +198,7 @@ void setup() {
             }
             else if (Obstacle_Wrong2 == LOW) {
               delay(100);
+              wrong_throw(buzzerPin);
               Serial.println("Wrong hole");
               showScreen_1P(score, "Wrong hole");
               digitalWrite(blueLedPin, LOW);
@@ -238,6 +246,7 @@ void setup() {
             }
             else if (Obstacle_Wrong1 == LOW) {
               delay(100);
+              wrong_throw(buzzerPin);
               Serial.println("Wrong hole");
               showScreen_1P(score, "Wrong hole");
               digitalWrite(redLedPin, LOW);
@@ -245,6 +254,7 @@ void setup() {
             }
             else if (Obstacle_Wrong2 == LOW) {
               delay(100);
+              wrong_throw(buzzerPin);
               Serial.println("Wrong hole");
               showScreen_1P(score, "Wrong hole");
               digitalWrite(redLedPin, LOW);
@@ -294,7 +304,10 @@ void setup() {
       digitalWrite(greenLedPin, LOW);
       digitalWrite(pinkLedPin, LOW);
       lcd.clear();
+      delay(2000);
 
+      showScreen_2P(health_1P, health_2P, "Game Start!");
+      
       int i;
       int a, b, c, d; // 產生一陣列儲存每一個迴圈的亂數資料
 
