@@ -41,6 +41,7 @@ void fiveSecond(int speakerPin);
 void score_4(int speakerPin);
 void score_5_9(int speakerPin);
 void score_10(int speakerPin);
+void minus_1P(int speakerPin);
 void wrong_throw(int speakerPin);
 void game_over(int speakerPin);
 
@@ -653,6 +654,10 @@ void loop() {
         showScreen_1P(score, "WOOOOOOW");
         score_10(buzzerPin);
       }
+      if( score <= 0 ){
+        showScreen_1P(score, "Retard?");
+        minus_1P(buzzerPin);
+      }
       break;
     }
 
@@ -1247,4 +1252,22 @@ void game_over(int speakerPin)
 
     delay(500);
   }
+}
+
+void minus_1P(int speakerPin)
+{
+// notes in the melody:
+int NOTE_C3=131, NOTE_D3=147, NOTE_E3=165, NOTE_G3=196;
+int melody[] = {NOTE_E3, NOTE_E3, NOTE_E3, NOTE_E3, NOTE_G3,NOTE_C3, NOTE_D3, NOTE_E3};
+int duration[] = {4,4,2,4,4,4,4,2};  
+int thisNote, duration_second;
+
+  for (thisNote = 0; thisNote < 8; thisNote++)  
+  {  
+      duration_second=1000/duration[thisNote];
+  tone(speakerPin, melody[thisNote], duration_second);
+
+    delay(1000);  // 間隔一段時間後再播放下一個音階
+
+   }
 }
