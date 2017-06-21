@@ -34,11 +34,6 @@ int Obstacle_Wrong3 = HIGH;
 int Obstacle_Wrong4 = HIGH;
 int Obstacle_Wrong5 = HIGH;
 
-int health_1P = 100; // 雙人模式的血量
-int health_2P = 100;
-
-int score = 0; // 單人模式計分用
-
 void showScreen_1P(int score, String feedback);
 void showScreen_2P(int health_1P, int health_2P, String feedback);
 void catch_ball_music(int speakerPin);
@@ -50,7 +45,17 @@ void wrong_throw(int speakerPin);
 void game_over(int speakerPin);
 
 void setup() {
+  
+}
 
+
+void loop() {
+
+  int score = 0; // 單人模式計分用int score = 0; // 單人模式計分用
+  
+  int health_1P = 100; // 雙人模式的血量
+  int health_2P = 100;
+  
   pinMode(buzzerPin, OUTPUT); // 蜂鳴器 ---> 輸出模式
 
   pinMode(greenLedPin, OUTPUT); // Led燈 ---> 輸出模式
@@ -393,6 +398,7 @@ void setup() {
             delay(100);
             wrong_throw(buzzerPin);
             Serial.println("Wrong hole");
+            score -= 1;
             showScreen_1P(score, "Wrong hole");
             digitalWrite(pinkLedPin, LOW);
             break;
@@ -401,6 +407,7 @@ void setup() {
             delay(100);
             wrong_throw(buzzerPin);
             Serial.println("Wrong hole");
+            score -= 1;
             showScreen_1P(score, "Wrong hole");
             digitalWrite(pinkLedPin, LOW);
             break;
@@ -409,6 +416,7 @@ void setup() {
             delay(100);
             wrong_throw(buzzerPin);
             Serial.println("Wrong hole");
+            score -= 1;
             showScreen_1P(score, "Wrong hole");
             digitalWrite(pinkLedPin, LOW);
             break;
@@ -417,6 +425,7 @@ void setup() {
             delay(100);
             wrong_throw(buzzerPin);
             Serial.println("Wrong hole");
+            score -= 1;
             showScreen_1P(score, "Wrong hole");
             digitalWrite(pinkLedPin, LOW);
             break;
@@ -425,6 +434,7 @@ void setup() {
             delay(100);
             wrong_throw(buzzerPin);
             Serial.println("Wrong hole");
+            score -= 1;
             showScreen_1P(score, "Wrong hole");
             digitalWrite(pinkLedPin, LOW);
             break;
@@ -440,6 +450,7 @@ void setup() {
 
           if (timeInterval == 20000) {
             Serial.println("Times up");
+            score -= 1;
             showScreen_1P(score, "Time's up!!");
             digitalWrite(pinkLedPin, LOW);
             break;
@@ -476,6 +487,7 @@ void setup() {
             delay(100);
             wrong_throw(buzzerPin);
             Serial.println("Wrong hole");
+            score -= 1;
             showScreen_1P(score, "Wrong hole");
             digitalWrite(purpleLedPin, LOW);
             break;
@@ -484,6 +496,7 @@ void setup() {
             delay(100);
             wrong_throw(buzzerPin);
             Serial.println("Wrong hole");
+            score -= 1;
             showScreen_1P(score, "Wrong hole");
             digitalWrite(purpleLedPin, LOW);
             break;
@@ -492,6 +505,7 @@ void setup() {
             delay(100);
             wrong_throw(buzzerPin);
             Serial.println("Wrong hole");
+            score -= 1;
             showScreen_1P(score, "Wrong hole");
             digitalWrite(purpleLedPin, LOW);
             break;
@@ -500,6 +514,7 @@ void setup() {
             delay(100);
             wrong_throw(buzzerPin);
             Serial.println("Wrong hole");
+            score -= 1;
             showScreen_1P(score, "Wrong hole");
             digitalWrite(purpleLedPin, LOW);
             break;
@@ -508,6 +523,7 @@ void setup() {
             delay(100);
             wrong_throw(buzzerPin);
             Serial.println("Wrong hole");
+            score -= 1;
             showScreen_1P(score, "Wrong hole");
             digitalWrite(purpleLedPin, LOW);
             break;
@@ -523,6 +539,7 @@ void setup() {
 
           if (timeInterval == 20000) {
             Serial.println("Times up");
+            score -= 1;
             showScreen_1P(score, "Time's up!!");
             digitalWrite(purpleLedPin, LOW);
             break;
@@ -559,6 +576,7 @@ void setup() {
             delay(100);
             wrong_throw(buzzerPin);
             Serial.println("Wrong hole");
+            score -= 1;
             showScreen_1P(score, "Wrong hole");
             digitalWrite(yellowLedPin, LOW);
             break;
@@ -567,6 +585,7 @@ void setup() {
             delay(100);
             wrong_throw(buzzerPin);
             Serial.println("Wrong hole");
+            score -= 1;
             showScreen_1P(score, "Wrong hole");
             digitalWrite(yellowLedPin, LOW);
             break;
@@ -575,6 +594,7 @@ void setup() {
             delay(100);
             wrong_throw(buzzerPin);
             Serial.println("Wrong hole");
+            score -= 1;
             showScreen_1P(score, "Wrong hole");
             digitalWrite(yellowLedPin, LOW);
             break;
@@ -583,6 +603,7 @@ void setup() {
             delay(100);
             wrong_throw(buzzerPin);
             Serial.println("Wrong hole");
+            score -= 1;
             showScreen_1P(score, "Wrong hole");
             digitalWrite(yellowLedPin, LOW);
             break;
@@ -591,6 +612,7 @@ void setup() {
             delay(100);
             wrong_throw(buzzerPin);
             Serial.println("Wrong hole");
+            score -= 1;
             showScreen_1P(score, "Wrong hole");
             digitalWrite(yellowLedPin, LOW);
             break;
@@ -606,6 +628,7 @@ void setup() {
 
           if (timeInterval == 20000) {
             Serial.println("Times up");
+            score -= 1;
             showScreen_1P(score, "Time's up!!");
             digitalWrite(yellowLedPin, LOW);
             break;
@@ -871,6 +894,7 @@ void setup() {
               delay(100);
               wrong_throw(buzzerPin);
               Serial.println("Wrong hole");
+              health_1P -= 10;
               showScreen_2P(health_1P, health_2P, "Wrong hole");
               digitalWrite(pinkLedPin, LOW);
               break;
@@ -879,6 +903,7 @@ void setup() {
               delay(100);
               wrong_throw(buzzerPin);
               Serial.println("Wrong hole");
+              health_1P -= 10;
               showScreen_2P(health_1P, health_2P, "Wrong hole");
               digitalWrite(pinkLedPin, LOW);
               break;
@@ -894,6 +919,7 @@ void setup() {
 
             if (timeInterval == 20000) {
               Serial.println("Times up");
+              health_1P -= 10;
               showScreen_2P(health_1P, health_2P, "Time's up!!");
               digitalWrite(pinkLedPin, LOW);
               break;
@@ -927,6 +953,7 @@ void setup() {
               delay(100);
               wrong_throw(buzzerPin);
               Serial.println("Wrong hole");
+              health_1P -= 10;
               showScreen_2P(health_1P, health_2P, "Wrong hole");
               digitalWrite(purpleLedPin, LOW);
               break;
@@ -935,6 +962,7 @@ void setup() {
               delay(100);
               wrong_throw(buzzerPin);
               Serial.println("Wrong hole");
+              health_1P -= 10;
               showScreen_2P(health_1P, health_2P, "Wrong hole");
               digitalWrite(purpleLedPin, LOW);
               break;
@@ -950,6 +978,7 @@ void setup() {
 
             if (timeInterval == 20000) {
               Serial.println("Times up");
+              health_1P -= 10;
               showScreen_2P(health_1P, health_2P, "Time's up!!");
               digitalWrite(purpleLedPin, LOW);
               break;
@@ -985,6 +1014,7 @@ void setup() {
               delay(100);
               wrong_throw(buzzerPin);
               Serial.println("Wrong hole");
+              health_1P -= 10;
               showScreen_2P(health_1P, health_2P, "Wrong hole");
               digitalWrite(yellowLedPin, LOW);
               break;
@@ -993,6 +1023,7 @@ void setup() {
               delay(100);
               wrong_throw(buzzerPin);
               Serial.println("Wrong hole");
+              health_1P -= 10;
               showScreen_2P(health_1P, health_2P, "Wrong hole");
               digitalWrite(yellowLedPin, LOW);
               break;
@@ -1008,6 +1039,7 @@ void setup() {
 
             if (timeInterval == 20000) {
               Serial.println("Times up");
+              health_1P -= 10;
               showScreen_2P(health_1P, health_2P, "Time's up!!");
               digitalWrite(yellowLedPin, LOW);
               break;
@@ -1031,11 +1063,7 @@ void setup() {
       break;
     }
   }
-}
-
-
-void loop() {
-
+  delay (3000);
 }
 
 
