@@ -107,7 +107,7 @@ void setup() {
       for (i = 1; i <= 10; i++) {
         while (1) {
           randomSeed(analogRead(A0)); // 宣告亂數種子(以數位訊號為亂數種)
-          a[i] = random(1000) % 5 + 1;
+          a[i] = random(1000) % 6 + 1;
           if (a[i] != a[i - 1]) // 準備產生亂數 以陣列比較前後兩次亂數是否一樣, 若一樣則重新產生一次亂數, 否則 break
             break;
         }
@@ -362,7 +362,7 @@ void setup() {
           }
         }
         delay(1000);
-      }
+      
       if ( a[i] == 4 ) {
         digitalWrite(pinkLedPin, HIGH);
         const unsigned long previousMillis = millis(); // 紀錄迴圈開始時當下的時間
@@ -612,7 +612,7 @@ void setup() {
           }
         }
       }
-
+      }
 
       delay(100);
       Serial.print("Your score: ");
